@@ -48,7 +48,7 @@ class Employees extends Component {
 
     const filtered =
       selectedDepartment && selectedDepartment._id
-        ? allEmployees.filter(m => m.department._id === selectedDepartment._id)
+        ? allEmployees.filter(m => m.department_id === selectedDepartment._id)
         : allEmployees;
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
