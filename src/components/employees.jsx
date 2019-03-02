@@ -37,6 +37,11 @@ class Employees extends Component {
     this.setState({ sortColumn });
   };
 
+  handlePriceFormat = employee => {
+    const priceFormat = employee.salary.toFixed(2);
+    return <span>${priceFormat}</span>;
+  };
+
   getPagedData = () => {
     const {
       pageSize,
@@ -83,6 +88,7 @@ class Employees extends Component {
             onLike={this.handleLike}
             onDelete={this.handleDelete}
             onSort={this.handleSort}
+            setPriceFormat={this.handlePriceFormat}
           />
           <Pagination
             itemsCount={totalCount}

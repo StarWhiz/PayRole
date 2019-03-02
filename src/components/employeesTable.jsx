@@ -6,7 +6,11 @@ class EmployeesTable extends Component {
     { path: "name", label: "Name" },
     { path: "department_name", label: "Department" },
     { path: "hiringDate", label: "Hiring Date" },
-    { path: "salary", label: "Salary" }
+    {
+      path: "salary",
+      label: "Salary",
+      content: employee => this.props.setPriceFormat(employee)
+    }
   ];
 
   render() {
