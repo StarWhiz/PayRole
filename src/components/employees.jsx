@@ -6,6 +6,7 @@ import { getEmployees } from "../services/fakeEmployeeService";
 import { getDepartments } from "../services/fakeDepartmentService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
+import SearchBox from "./searchBox";
 
 class Employees extends Component {
   state = {
@@ -13,7 +14,9 @@ class Employees extends Component {
     departments: [],
     currentPage: 1,
     pageSize: 4,
-    sortColumn: { path: "title", order: "asc" }
+    sortColumn: { path: "title", order: "asc" },
+    selectedDepartment: null,
+    searchQuery: ""
   };
 
   componentDidMount() {
@@ -30,7 +33,11 @@ class Employees extends Component {
   };
 
   handleDepartmentSelect = department => {
-    this.setState({ selectedDepartment: department, currentPage: 1 });
+    this.setState({
+      selectedDepartment: department,
+      currentPage: 1,
+      searchQuery: ""
+    });
   };
 
   handleSort = sortColumn => {
@@ -42,19 +49,29 @@ class Employees extends Component {
     return <span>${priceFormat}</span>;
   };
 
+  handleSearch = query => {
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+  };
+
   getPagedData = () => {
     const {
       pageSize,
       currentPage,
       sortColumn,
       selectedDepartment,
-      employees: allEmployees
+      employees: allEmployees,
+      searchQuery
     } = this.state;
 
-    const filtered =
-      selectedDepartment && selectedDepartment._id
-        ? allEmployees.filter(m => m.department_id === selectedDepartment._id)
-        : allEmployees;
+    let filtered = allEmployees;
+    if (searchQuery)
+      filtered = allEmployees.filter(e =>
+        e.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    else if (selectedDepartment && selectedDepartment._id)
+      filtered = allEmployees.filter(
+        m => m.department_id === selectedDepartment._id
+      );
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -65,7 +82,7 @@ class Employees extends Component {
 
   render() {
     const { length: count } = this.state.employees;
-    const { pageSize, currentPage, sortColumn } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
     if (count === 0) return <p>There are no employees in the database.</p>;
 
@@ -82,6 +99,7 @@ class Employees extends Component {
         </div>
         <div className="col">
           <p>Showing {totalCount} employees in the database.</p>
+          <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <EmployeesTable
             employees={employees}
             sortColumn={sortColumn}
