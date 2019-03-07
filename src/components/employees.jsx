@@ -98,6 +98,14 @@ class Employees extends Component {
           />
         </div>
         <div className="col">
+          <button
+            className="btn btn-primary"
+            onClick={this.props.onLogout}
+            style={{ marginBottom: 20 }}
+            type="button"
+          >
+            Logout
+          </button>
           <p>Showing {totalCount} employees in the database.</p>
           <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <EmployeesTable
