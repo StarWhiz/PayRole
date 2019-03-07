@@ -13,10 +13,11 @@ class Employees extends Component {
     employees: [],
     departments: [],
     currentPage: 1,
-    pageSize: 4,
+    pageSize: 10,
     sortColumn: { path: "title", order: "asc" },
     selectedDepartment: null,
-    searchQuery: ""
+    searchQuery: "",
+    pageRange: 15
   };
 
   componentDidMount() {
@@ -82,7 +83,13 @@ class Employees extends Component {
 
   render() {
     const { length: count } = this.state.employees;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      sortColumn,
+      searchQuery,
+      pageRange
+    } = this.state;
 
     if (count === 0) return <p>There are no employees in the database.</p>;
 
@@ -121,6 +128,7 @@ class Employees extends Component {
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
+            pageRange={pageRange}
           />
         </div>
       </div>
