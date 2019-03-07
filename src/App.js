@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
 import Employees from "./components/employees";
-import AuthService from './services/authService';
-import GraphService from './services/graphService';
+import AuthService from "./services/authService";
+import GraphService from "./services/graphService";
 
 class App extends Component {
-
   constructor() {
     super();
     this.authService = new AuthService();
@@ -76,21 +75,21 @@ class App extends Component {
   };
 
   render() {
-      if(this.state.user) {
-        return (
+    if (this.state.user) {
+      return (
         <main className="container">
-          <Employees />
+          <Employees onLogout={this.logout} />
         </main>
-        );
-      } else {
-        return (
-          <div key="loggedIn">
-            <button onClick={this.login} type="button">
-              Login with Microsoft
-            </button>
-          </div>
-        );
-      }
+      );
+    } else {
+      return (
+        <div key="loggedIn">
+          <button onClick={this.login} type="button">
+            Login with Microsoft
+          </button>
+        </div>
+      );
+    }
   }
 }
 

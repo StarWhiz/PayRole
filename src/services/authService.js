@@ -1,28 +1,28 @@
-import * as Msal from 'msal';
-import credentials from '../credentials';
+import * as Msal from "msal";
+import credentials from "../credentials";
 
 export default class AuthService {
   constructor() {
-    let PROD_REDIRECT_URI = 'OUR_PROD_URL_HERE';
+    let PROD_REDIRECT_URI = "OUR_PROD_URL_HERE";
     let redirectUri = window.location.origin;
-    if (window.location.hostname !== 'localhost') {
+    if (window.location.hostname !== "localhost") {
       redirectUri = PROD_REDIRECT_URI;
     }
-    if(process.env.NODE_ENV === 'production') {
-        this.applicationConfig = {
-            clientID: process.env.CLIENT_ID,
-            graphScopes: ['user.read']
-        };  
+    if (process.env.NODE_ENV === "production") {
+      this.applicationConfig = {
+        clientID: process.env.CLIENT_ID,
+        graphScopes: ["user.read"]
+      };
     } else {
-        this.applicationConfig = {
-            clientID: credentials.clientID,
-            graphScopes: ['user.read']
-        }; 
+      this.applicationConfig = {
+        clientID: credentials.clientID,
+        graphScopes: ["user.read"]
+      };
     }
-    
+
     this.app = new Msal.UserAgentApplication(
       this.applicationConfig.clientID,
-      '',
+      "",
       () => {
         // callback for login redirect
       },
