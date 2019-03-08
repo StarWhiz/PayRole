@@ -17,7 +17,7 @@ class Employees extends Component {
     sortColumn: { path: "title", order: "asc" },
     selectedDepartment: null,
     searchQuery: "",
-    pageRange: 15
+    pageRange: 5
   };
 
   componentDidMount() {
