@@ -9,6 +9,43 @@ class pagination extends Component {
     this.setState({ pageNumber: e.target.value });
   };
 
+  //function that disables and enables iterating buttons
+  iteration = (iterate, direction, current, totalPages) => {
+    if(direction === 'backwards' && (current > iterate)){
+      return(
+        <li className={current === 1 ? "page-item disabled" : ""}>
+          <a
+            className="page-link"
+            aria-label="Previous"
+            onClick={() =>
+              this.props.onPageChange(current <= iterate ? 1 : current - iterate)
+            }
+          >
+            <span aria-hidden="true">&laquo;{iterate}</span>
+          </a>
+        </li>
+      )
+    } else if(direction === 'forwards' && (current + iterate <= totalPages)){
+        return(
+          <li className={current === totalPages ? "page-item disabled" : ""}>
+            <a
+              className="page-link"
+              aria-label="Next"
+              onClick={() =>
+                this.props.onPageChange(
+                  current + iterate >= totalPages
+                    ? totalPages
+                    : current + iterate
+                )
+              }
+            >
+              <span aria-hidden="true">{iterate}&raquo;</span>
+            </a>
+          </li>
+        );
+    } else return;
+  }
+
   render() {
     const {
       itemsCount,
@@ -43,28 +80,8 @@ class pagination extends Component {
               First
             </a>
           </li>
-          <li className={currentPage === 1 ? "page-item disabled" : ""}>
-            <a
-              className="page-link"
-              aria-label="Previous"
-              onClick={() =>
-                onPageChange(currentPage <= 100 ? 1 : currentPage - 100)
-              }
-            >
-              <span aria-hidden="true">&laquo;100</span>
-            </a>
-          </li>
-          <li className={currentPage === 1 ? "page-item disabled" : ""}>
-            <a
-              className="page-link"
-              aria-label="Previous"
-              onClick={() =>
-                onPageChange(currentPage <= 10 ? 1 : currentPage - 10)
-              }
-            >
-              <span aria-hidden="true">&laquo;10</span>
-            </a>
-          </li>
+          {this.iteration(100, 'backwards', currentPage, pagesCount)}
+          {this.iteration(10, 'backwards', currentPage, pagesCount)}
           {pagesWindow.map(page => (
             <li
               key={page}
@@ -77,38 +94,8 @@ class pagination extends Component {
               </a>
             </li>
           ))}
-          <li
-            className={currentPage === pagesCount ? "page-item disabled" : ""}
-          >
-            <a
-              className="page-link"
-              aria-label="Previous"
-              onClick={() =>
-                onPageChange(
-                  currentPage + 10 >= pagesCount ? pagesCount : currentPage + 10
-                )
-              }
-            >
-              <span aria-hidden="true">10&raquo;</span>
-            </a>
-          </li>
-          <li
-            className={currentPage === pagesCount ? "page-item disabled" : ""}
-          >
-            <a
-              className="page-link"
-              aria-label="Previous"
-              onClick={() =>
-                onPageChange(
-                  currentPage + 100 >= pagesCount
-                    ? pagesCount
-                    : currentPage + 100
-                )
-              }
-            >
-              <span aria-hidden="true">100&raquo;</span>
-            </a>
-          </li>
+          {this.iteration(10, 'forwards', currentPage, pagesCount)}
+          {this.iteration(100, 'forwards', currentPage, pagesCount)}
           <li
             className={currentPage === pagesCount ? "page-item disabled" : ""}
           >
