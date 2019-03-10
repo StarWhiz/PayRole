@@ -46,6 +46,20 @@ class pagination extends Component {
     } else return;
   }
 
+  validate = (pageNumber, pagesCount) => {
+    const pageN = parseInt(pageNumber, 10);
+    if(isNaN(pageNumber)){
+      return
+    }
+    else if(pageN > pagesCount){
+      this.props.onPageChange(pagesCount);
+    } 
+    else if(pageN < 1){
+      this.props.onPageChange(1);
+    } 
+    else this.props.onPageChange(pageN);
+  }
+
   render() {
     const {
       itemsCount,
@@ -72,6 +86,7 @@ class pagination extends Component {
         pagesWindow = pages.slice(startingPoint, endingPoint);
       }
     }
+
     return (
       <nav>
         <ul className="pagination">
@@ -110,7 +125,7 @@ class pagination extends Component {
           onChange={this.handleChange}
         />
         <button
-          onClick={() => onPageChange(parseInt(this.state.pageNumber, 10))}
+          onClick={() => this.validate(this.state.pageNumber, pagesCount)}
         >
           Search
         </button>
