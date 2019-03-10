@@ -74,5 +74,17 @@ const employees = [
 ];
 
 export function getEmployees() {
-  return employees;
+  var employeesList = [...employees];
+  for (var i = 0; i < 80000; i++) {
+    const employee = {
+      employee_id: "5b21ca3eeb7f6fbccd47181f" + i,
+      name: "FakeEmployee" + i,
+      department_id: "5b21ca3eeb7f6fbccd471820",
+      department_name: "Finance",
+      hiringDate: "2001-3-21",
+      salary: 13.5
+    };
+    employeesList.push(employee);
+  }
+  return employeesList;
 }
