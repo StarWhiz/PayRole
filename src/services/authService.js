@@ -1,21 +1,20 @@
 import * as Msal from "msal";
-import credentials from "../credentials";
 
 export default class AuthService {
   constructor() {
-    let PROD_REDIRECT_URI = "OUR_PROD_URL_HERE";
+    let PROD_REDIRECT_URI = "https://engr-dudes.herokuapp.com/";
     let redirectUri = window.location.origin;
     if (window.location.hostname !== "localhost") {
       redirectUri = PROD_REDIRECT_URI;
     }
     if (process.env.NODE_ENV === "production") {
       this.applicationConfig = {
-        clientID: process.env.CLIENT_ID,
+        clientID: process.env.react-app-ad-clientid,
         graphScopes: ["user.read"]
       };
     } else {
       this.applicationConfig = {
-        clientID: credentials.clientID,
+        clientID: require('../credentials').clientID,
         graphScopes: ["user.read"]
       };
     }
