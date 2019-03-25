@@ -9,7 +9,7 @@ export default class AuthService {
     }
     if (process.env.NODE_ENV === "production") {
       this.applicationConfig = {
-        clientID: process.env.react-app-ad-clientid,
+        clientID: process.env.react_app_ad_clientid,
         graphScopes: ["user.read"]
       };
     } else {
