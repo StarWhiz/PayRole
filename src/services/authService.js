@@ -14,7 +14,9 @@ export default class AuthService {
       };
     } else {
       this.applicationConfig = {
-        clientID: require('../credentials').clientID,
+        //import a from 'b';
+        //const a = require('b').default
+        clientID: require("../credentials").default.clientID,
         graphScopes: ["user.read"]
       };
     }
