@@ -3,6 +3,7 @@ import "./App.css";
 import Employees from "./components/employees";
 import AuthService from "./services/authService";
 import GraphService from "./services/graphService";
+import { Route } from "react-router-dom";
 
 class App extends Component {
   constructor() {
@@ -57,6 +58,7 @@ class App extends Component {
     this.authService.login().then(
       user => {
         if (user) {
+          console.log(user);
           this.setState({
             user: user
           });
