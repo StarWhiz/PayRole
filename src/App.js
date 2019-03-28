@@ -4,6 +4,7 @@ import Employees from "./components/employees";
 import AuthService from "./services/authService";
 import GraphService from "./services/graphService";
 import { Route } from "react-router-dom";
+import Login from "./components/login";
 
 class App extends Component {
   constructor() {
@@ -84,13 +85,7 @@ class App extends Component {
         </main>
       );
     } else {
-      return (
-        <div key="loggedIn">
-          <button onClick={this.login} type="button">
-            Login with Microsoft
-          </button>
-        </div>
-      );
+      return <Login onLogin={this.login} />;
     }
   }
 }
