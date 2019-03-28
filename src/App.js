@@ -11,12 +11,6 @@ class App extends Component {
     super();
     this.authService = new AuthService();
     this.graphService = new GraphService();
-    this.state = {
-      user: null,
-      userInfo: null,
-      apiCallFailed: false,
-      loginFailed: false
-    };
   }
 
   logout = () => {
@@ -25,35 +19,6 @@ class App extends Component {
 
   getUser = () => {
     return this.authService.getUser();
-  };
-
-  callAPI = () => {
-    this.setState({
-      apiCallFailed: false
-    });
-    this.authService.getToken().then(
-      token => {
-        this.graphService.getUserInfo(token).then(
-          data => {
-            this.setState({
-              userInfo: data
-            });
-          },
-          error => {
-            console.error(error);
-            this.setState({
-              apiCallFailed: true
-            });
-          }
-        );
-      },
-      error => {
-        console.error(error);
-        this.setState({
-          apiCallFailed: true
-        });
-      }
-    );
   };
 
   //"That" refers to the component that wants to change the routing URL, in this case, the login component.
