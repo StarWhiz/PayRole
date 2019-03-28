@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
 import Employees from "./components/employees";
+import { Route, Switch } from "react-router-dom";
+import Login from "./components/login";
 import AuthService from "./services/authService";
 import GraphService from "./services/graphService";
-import { Route } from "react-router-dom";
-import Login from "./components/login";
 
 class App extends Component {
   constructor() {
@@ -18,6 +18,14 @@ class App extends Component {
       loginFailed: false
     };
   }
+
+  logout = () => {
+    this.authService.logout();
+  };
+
+  getUser = () => {
+    return this.authService.getUser();
+  };
 
   callAPI = () => {
     this.setState({
@@ -48,11 +56,9 @@ class App extends Component {
     );
   };
 
-  logout = () => {
-    this.authService.logout();
-  };
-
-  login = () => {
+  //"That" refers to the component that wants to change the routing URL, in this case, the login component.
+  //I did this because "this" changes its scope to app.js, and we want to keep the function over here
+  login = that => {
     this.setState({
       loginFailed: false
     });
@@ -63,6 +69,7 @@ class App extends Component {
           this.setState({
             user: user
           });
+          that.props.history.replace("/employees/employee");
         } else {
           this.setState({
             loginFailed: true
@@ -78,15 +85,27 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.user) {
-      return (
-        <main className="container">
-          <Employees onLogout={this.logout} />
-        </main>
-      );
-    } else {
-      return <Login onLogin={this.login} />;
-    }
+    return (
+      <main className="container">
+        <Switch>
+          <Route
+            path="/employees/employee"
+            render={props => (
+              <Employees
+                onLogout={this.logout}
+                user={this.getUser()} //The more proper way to keep track of the user state is to get it dynamically
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path="/"
+            exact
+            render={props => <Login onLogin={this.login} {...props} />}
+          />
+        </Switch>
+      </main>
+    );
   }
 }
 

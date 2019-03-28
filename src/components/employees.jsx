@@ -7,6 +7,7 @@ import { getDepartments } from "../services/fakeDepartmentService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
+import { Redirect } from "react-router-dom";
 
 class Employees extends Component {
   state = {
@@ -95,44 +96,48 @@ class Employees extends Component {
 
     const { totalCount, data: employees } = this.getPagedData();
 
-    return (
-      <div className="row">
-        <div className="col-3">
-          <ListGroup
-            items={this.state.departments}
-            selectedItem={this.state.selectedDepartment}
-            onItemSelect={this.handleDepartmentSelect}
-          />
+    if (this.props.user) {
+      return (
+        <div className="row">
+          <div className="col-3">
+            <ListGroup
+              items={this.state.departments}
+              selectedItem={this.state.selectedDepartment}
+              onItemSelect={this.handleDepartmentSelect}
+            />
+          </div>
+          <div className="col">
+            <button
+              className="btn btn-primary"
+              onClick={this.props.onLogout}
+              style={{ marginBottom: 20 }}
+              type="button"
+            >
+              Logout
+            </button>
+            <p>Showing {totalCount} employees in the database.</p>
+            <SearchBox value={searchQuery} onChange={this.handleSearch} />
+            <EmployeesTable
+              employees={employees}
+              sortColumn={sortColumn}
+              onLike={this.handleLike}
+              onDelete={this.handleDelete}
+              onSort={this.handleSort}
+              setPriceFormat={this.handlePriceFormat}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+              pageRange={pageRange}
+            />
+          </div>
         </div>
-        <div className="col">
-          <button
-            className="btn btn-primary"
-            onClick={this.props.onLogout}
-            style={{ marginBottom: 20 }}
-            type="button"
-          >
-            Logout
-          </button>
-          <p>Showing {totalCount} employees in the database.</p>
-          <SearchBox value={searchQuery} onChange={this.handleSearch} />
-          <EmployeesTable
-            employees={employees}
-            sortColumn={sortColumn}
-            onLike={this.handleLike}
-            onDelete={this.handleDelete}
-            onSort={this.handleSort}
-            setPriceFormat={this.handlePriceFormat}
-          />
-          <Pagination
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={this.handlePageChange}
-            pageRange={pageRange}
-          />
-        </div>
-      </div>
-    );
+      );
+    } else {
+      return <Redirect to="/" />;
+    }
   }
 }
 

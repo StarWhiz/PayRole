@@ -47,6 +47,11 @@ export default class AuthService {
       }
     );
   };
+
+  getUser = () => {
+    return this.app.getUser();
+  };
+
   logout = () => {
     this.app.logout();
   };
