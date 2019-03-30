@@ -16,8 +16,6 @@ FROM   employees
        NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp
 LIMIT 25;`
 
-var employeesList = [];
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -33,7 +31,7 @@ app.get('/empData', function (req, res) {
     database: "employees"
   });
   
-
+  var employeesList = [];
   
   // Initialize MySQL Connection
   con.connect(function(err) {

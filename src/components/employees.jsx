@@ -30,7 +30,13 @@ class Employees extends Component {
 
     fetch('http://localhost:3001/empData')
     .then(response => response.json())
-    .then(posts => {console.log(posts)})
+    .then(empData => {console.log(empData); 
+                      return(empData)})
+
+    fetch('http://localhost:3002/deptData')
+    .then(response => response.json())
+    .then(deptData => {console.log(deptData); 
+                       return(deptData)})
   }
 
   handlePageChange = page => {

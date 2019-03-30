@@ -8,8 +8,6 @@ let sqlQuery = `
     SELECT *
     FROM departments;`
 
-var deptList = [];
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -31,6 +29,8 @@ app.get('/deptData', function (req, res) {
     console.log("Connected to database!");
   });
 
+  var deptList = [];
+
   con.query(sqlQuery, function(err, rows, fields) {
     if (err) {
       throw err;
@@ -50,6 +50,6 @@ app.get('/deptData', function (req, res) {
   });
 });
 
-app.listen(3001, () => {
-  console.log('Go to http://localhost:3001/deptData to see posts');
+app.listen(3002, () => {
+  console.log('Go to http://localhost:3002/deptData to see posts');
 });
