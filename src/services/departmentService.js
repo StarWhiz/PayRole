@@ -5,18 +5,10 @@ const app = express();
 
 // SQL Query
 let sqlQuery = `
-SELECT emp_no,
-       first_name,
-       last_name,
-	   DATE_FORMAT(hire_date,'%m/%d/%Y') AS date,
-       salary,
-       dept_no,
-       dept_name      
-FROM   employees
-       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp
-LIMIT 25;`
+    SELECT *
+    FROM departments;`
 
-var employeesList = [];
+var deptList = [];
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -24,7 +16,7 @@ app.use(function(req, res, next) {
   next();
   });
 
-app.get('/empData', function (req, res) {
+app.get('/deptData', function (req, res) {
   const con = mysql.createConnection({
     host: "138.68.9.254",
     port: 3306,
@@ -32,8 +24,6 @@ app.get('/empData', function (req, res) {
     password: "CMPE172project!",
     database: "employees"
   });
-  
-
   
   // Initialize MySQL Connection
   con.connect(function(err) {
@@ -48,22 +38,18 @@ app.get('/empData', function (req, res) {
     }
 
     for (var i = 0;i < rows.length; i++) {
-        var employee = [];
-        employee = {   
-            employee_id: rows[i].emp_no, 
-            name: rows[i].first_name+ " " + rows[i].last_name,
-            department_id: rows[i].dept_no,
-            department_name: rows[i].dept_name,
-            hiringDate: rows[i].date,
-            salary: rows[i].salary
+        var department = [];
+        department = {   
+            _id: rows[i].dept_no, 
+            name: rows[i].dept_name
         }
-        employeesList.push(employee)
+        deptList.push(department)
     }
-    res.send(employeesList);
+    res.send(deptList);
     con.end();
   });
 });
 
 app.listen(3001, () => {
-  console.log('Go to http://localhost:3001/empData to see posts');
+  console.log('Go to http://localhost:3001/deptData to see posts');
 });
