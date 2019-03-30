@@ -28,7 +28,7 @@ class Employees extends Component {
 
     this.setState({ employees: getEmployees(), departments });
 
-    fetch('http://localhost:3001/sqlData')
+    fetch('http://localhost:3001/empData')
     .then(response => response.json())
     .then(posts => {console.log(posts)})
   }
