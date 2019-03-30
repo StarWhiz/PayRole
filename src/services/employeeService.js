@@ -13,10 +13,16 @@ SELECT emp_no,
        dept_no,
        dept_name      
 FROM   employees
-       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp;`
-
+       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp
+LIMIT 10;`
 
 var employeesList = [];
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+  });
 
 app.get('/sqlData', function (req, res) {
   const con = mysql.createConnection({
