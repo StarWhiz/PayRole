@@ -27,6 +27,10 @@ class Employees extends Component {
     ];
 
     this.setState({ employees: getEmployees(), departments });
+
+    fetch('http://localhost:3001/sqlData')
+    .then(response => response.json())
+    .then(posts => {console.log(posts)})
   }
 
   handlePageChange = page => {
