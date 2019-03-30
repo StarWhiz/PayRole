@@ -4,16 +4,7 @@ const express = require('express')
 const app = express();
 
 // SQL Query
-let sqlQuery = `
-SELECT emp_no,
-       first_name,
-       last_name,
-	   DATE_FORMAT(hire_date,'%m/%d/%Y') AS date,
-       salary,
-       dept_no,
-       dept_name      
-FROM   employees
-       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp;`
+let sqlQuery = `SELECT * FROM combined_emp_data;`
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import EmployeesTable from "./employeesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import { getEmployees } from "../services/fakeEmployeeService";
-import { getDepartments } from "../services/fakeDepartmentService";
+//import { getEmployees } from "../services/fakeEmployeeService";
+//import { getDepartments } from "../services/fakeDepartmentService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
@@ -21,10 +21,11 @@ class Employees extends Component {
   };
 
   componentDidMount() {
+    /*
     const departments = [
       { _id: "", name: "All Departments" },
       ...getDepartments()
-    ];
+    ];*/
 
     // this.setState({ employees: getEmployees(), departments });
     fetch('http://localhost:3002/deptData')
