@@ -28,7 +28,7 @@ class Employees extends Component {
     ];*/
 
     // this.setState({ employees: getEmployees(), departments });
-    fetch('http://localhost:3002/deptData')
+    fetch('http://138.68.9.254:3002/deptData')
     .then(response => response.json())
     .then(deptData => { const departments = [
                         { _id: "", name: "All Departments" },
@@ -37,7 +37,7 @@ class Employees extends Component {
                         this.setState({ departments: departments })
                        return(deptData)})
 
-    fetch('http://localhost:3001/empData')
+    fetch('http://138.68.9.254:3001/empData')
     .then(response => response.json())
     .then(empData => {this.setState({ employees: empData });; 
                       return(empData)})
