@@ -26,17 +26,22 @@ class Employees extends Component {
       ...getDepartments()
     ];
 
-    this.setState({ employees: getEmployees(), departments });
+    // this.setState({ employees: getEmployees(), departments });
+    fetch('http://localhost:3002/deptData')
+    .then(response => response.json())
+    .then(deptData => { const departments = [
+                        { _id: "", name: "All Departments" },
+                          ...deptData
+                        ];
+                        this.setState({ departments: departments })
+                       return(deptData)})
 
     fetch('http://localhost:3001/empData')
     .then(response => response.json())
-    .then(empData => {console.log(empData); 
+    .then(empData => {this.setState({ employees: empData });; 
                       return(empData)})
 
-    fetch('http://localhost:3002/deptData')
-    .then(response => response.json())
-    .then(deptData => {console.log(deptData); 
-                       return(deptData)})
+
   }
 
   handlePageChange = page => {

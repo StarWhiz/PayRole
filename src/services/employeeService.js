@@ -13,8 +13,7 @@ SELECT emp_no,
        dept_no,
        dept_name      
 FROM   employees
-       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp
-LIMIT 25;`
+       NATURAL JOIN emp_info_by_dept NATURAL JOIN latestSalaryPerEmp;`
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
