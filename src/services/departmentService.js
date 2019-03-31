@@ -51,8 +51,8 @@ app.get('/deptData', function (req, res) {
 });
 
 https.createServer({
-  key: fs.readFileSync('certs/server.key'),
-  cert: fs.readFileSync('certs/server.cert')
+  key: fs.readFileSync('certs/privkey1.pem'),
+  cert: fs.readFileSync('certs/fullchain1.pem')
 }, app).listen(3002, () => {
-  console.log('Listening... See content at https://138.68.9.254:3002/deptData')
+  console.log('Listening... See content at https://engrdudes.tk:3002/deptData')
 })
