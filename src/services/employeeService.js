@@ -1,3 +1,5 @@
+const https = require('https');
+const fs = require('fs');
 const mysql = require('mysql');
 const express = require('express')
 
@@ -20,14 +22,14 @@ app.get('/empData', function (req, res) {
     password: "CMPE172project!",
     database: "employees"
   });
-  
-  var employeesList = [];
-  
+
   // Initialize MySQL Connection
   con.connect(function(err) {
     if (err) throw err;
     console.log("Connected to database!");
   });
+
+  var employeesList = [];
 
   con.query(sqlQuery, function(err, rows, fields) {
     if (err) {
@@ -52,6 +54,9 @@ app.get('/empData', function (req, res) {
   });
 });
 
-app.listen(3001, () => {
-  console.log('Go to http://localhost:3001/empData to see posts');
-});
+https.createServer({
+  key: fs.readFileSync('certs/server.key'),
+  cert: fs.readFileSync('certs/server.cert')
+}, app).listen(3001, () => {
+  console.log('Listening...See content at https://138.68.9.254:3001/empData')
+})
