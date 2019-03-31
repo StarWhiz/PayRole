@@ -1,12 +1,12 @@
+const https = require('https');
+const fs = require('fs');
 const mysql = require('mysql');
-const express = require('express')
+const express = require('express');
 
 const app = express();
 
 // SQL Query
-let sqlQuery = `
-    SELECT *
-    FROM departments;`
+let sqlQuery = `SELECT * FROM departments;`
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -50,6 +50,9 @@ app.get('/deptData', function (req, res) {
   });
 });
 
-app.listen(3002, () => {
-  console.log('Go to http://localhost:3002/deptData to see posts');
-});
+https.createServer({
+  key: fs.readFileSync('certs/server.key'),
+  cert: fs.readFileSync('certs/server.cert')
+}, app).listen(3002, () => {
+  console.log('Listening... See content at https://138.68.9.254:3002/deptData')
+})
