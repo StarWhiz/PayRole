@@ -86,10 +86,19 @@ class Employees extends Component {
         e.name.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
       filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
-    } else if (selectedDepartment && selectedDepartment._id)
+      if (selectedDepartment && selectedDepartment._id)
+        filtered = filtered.map(m => {
+          //Overwrites all the correctly filtered employees to have the proper department tag
+          var e = m;
+          e.department_id = selectedDepartment._id;
+          e.department_name = selectedDepartment.name;
+          return e;
+        });
+    } else if (selectedDepartment && selectedDepartment._id) {
       filtered = allEmployees.filter(
         m => m.department_id === selectedDepartment._id
       );
+    }
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
