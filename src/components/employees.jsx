@@ -35,12 +35,12 @@ class Employees extends Component {
                           ...deptData
                         ];
                         this.setState({ departments: departments })
-                       return(deptData)})
+                       return(Promise.resolve(deptData))})
 
     fetch('https://engrdudes.tk:3001/empData')
     .then(response => response.json())
     .then(empData => {this.setState({ employees: empData });; 
-                      return(empData)})
+                      return(Promise.resolve(empData))})
 
 
   }
