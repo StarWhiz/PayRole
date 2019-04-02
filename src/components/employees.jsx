@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import EmployeesTable from "./employeesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import { getEmployees } from "../services/fakeEmployeeService";
-import { getDepartments } from "../services/fakeDepartmentService";
+//import { getEmployees } from "../services/fakeEmployeeService";
+//import { getDepartments } from "../services/fakeDepartmentService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
@@ -22,12 +22,28 @@ class Employees extends Component {
   };
 
   componentDidMount() {
+    /*
     const departments = [
       { _id: "", name: "All Departments" },
       ...getDepartments()
-    ];
+    ];*/
 
-    this.setState({ employees: getEmployees(), departments });
+    // this.setState({ employees: getEmployees(), departments });
+    fetch('https://engrdudes.tk:3002/deptData')
+    .then(response => response.json())
+    .then(deptData => { const departments = [
+                        { _id: "", name: "All Departments" },
+                          ...deptData
+                        ];
+                        this.setState({ departments: departments })
+                       return(deptData)})
+
+    fetch('https://engrdudes.tk:3001/empData')
+    .then(response => response.json())
+    .then(empData => {this.setState({ employees: empData });; 
+                      return(empData)})
+
+
   }
 
   handlePageChange = page => {

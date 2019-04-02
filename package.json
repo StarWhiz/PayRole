@@ -5,8 +5,10 @@
   "dependencies": {
     "bootstrap": "^4.1.1",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
     "lodash": "^4.17.11",
     "msal": "^0.2.4",
+    "mysql": "^2.16.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
