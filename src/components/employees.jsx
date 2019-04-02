@@ -29,21 +29,20 @@ class Employees extends Component {
     ];*/
 
     // this.setState({ employees: getEmployees(), departments });
-    fetch('https://engrdudes.tk:3002/deptData')
-    .then(response => response.json())
-    .then(deptData => { const departments = [
-                        { _id: "", name: "All Departments" },
-                          ...deptData
-                        ];
-                        this.setState({ departments: departments })
-                       return(Promise.resolve(deptData))})
+    fetch("https://engrdudes.tk:3002/deptData")
+      .then(response => response.json())
+      .then(deptData => {
+        const departments = [{ _id: "", name: "All Departments" }, ...deptData];
+        this.setState({ departments: departments });
+        return Promise.resolve(deptData);
+      });
 
-    fetch('https://engrdudes.tk:3001/empData')
-    .then(response => response.json())
-    .then(empData => {this.setState({ employees: empData });; 
-                      return(Promise.resolve(empData))})
-
-
+    fetch("https://engrdudes.tk:3001/empData")
+      .then(response => response.json())
+      .then(empData => {
+        this.setState({ employees: empData });
+        return Promise.resolve(empData);
+      });
   }
 
   handlePageChange = page => {
@@ -68,7 +67,11 @@ class Employees extends Component {
   };
 
   handleSearch = query => {
-    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+    this.setState({
+      searchQuery: query,
+      selectedDepartment: null,
+      currentPage: 1
+    });
   };
 
   getPagedData = () => {
@@ -82,14 +85,16 @@ class Employees extends Component {
     } = this.state;
 
     let filtered = allEmployees;
-    if (searchQuery)
+    if (searchQuery) {
       filtered = allEmployees.filter(e =>
-        e.name.toLowerCase().includes(searchQuery.toLowerCase())
+        e.name.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
-    else if (selectedDepartment && selectedDepartment._id)
+      filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
+    } else if (selectedDepartment && selectedDepartment._id) {
       filtered = allEmployees.filter(
         m => m.department_id === selectedDepartment._id
       );
+    }
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
