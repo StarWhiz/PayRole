@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import Employees from "./components/employees";
+import { Route, Switch } from "react-router-dom";
+import Login from "./components/login";
 import AuthService from "./services/authService";
 import GraphService from "./services/graphService";
 
@@ -9,57 +11,30 @@ class App extends Component {
     super();
     this.authService = new AuthService();
     this.graphService = new GraphService();
-    this.state = {
-      user: null,
-      userInfo: null,
-      apiCallFailed: false,
-      loginFailed: false
-    };
   }
-
-  callAPI = () => {
-    this.setState({
-      apiCallFailed: false
-    });
-    this.authService.getToken().then(
-      token => {
-        this.graphService.getUserInfo(token).then(
-          data => {
-            this.setState({
-              userInfo: data
-            });
-          },
-          error => {
-            console.error(error);
-            this.setState({
-              apiCallFailed: true
-            });
-          }
-        );
-      },
-      error => {
-        console.error(error);
-        this.setState({
-          apiCallFailed: true
-        });
-      }
-    );
-  };
 
   logout = () => {
     this.authService.logout();
   };
 
-  login = () => {
+  getUser = () => {
+    return this.authService.getUser();
+  };
+
+  //"That" refers to the component that wants to change the routing URL, in this case, the login component.
+  //I did this because "this" changes its scope to app.js, and we want to keep the function over here
+  login = that => {
     this.setState({
       loginFailed: false
     });
     this.authService.login().then(
       user => {
         if (user) {
+          console.log(user);
           this.setState({
             user: user
           });
+          that.props.history.replace("/employees/employee");
         } else {
           this.setState({
             loginFailed: true
@@ -75,21 +50,27 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.user) {
-      return (
-        <main className="container">
-          <Employees onLogout={this.logout} />
-        </main>
-      );
-    } else {
-      return (
-        <div key="loggedIn">
-          <button onClick={this.login} type="button">
-            Login with Microsoft
-          </button>
-        </div>
-      );
-    }
+    return (
+      <main className="container">
+        <Switch>
+          <Route
+            path="/employees/employee"
+            render={props => (
+              <Employees
+                onLogout={this.logout}
+                user={this.getUser()} //The more proper way to keep track of the user state is to get it dynamically
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path="/"
+            exact
+            render={props => <Login onLogin={this.login} {...props} />}
+          />
+        </Switch>
+      </main>
+    );
   }
 }
 
