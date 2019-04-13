@@ -14,7 +14,11 @@ class EmployeesTable extends Component {
   ];
 
   render() {
-    const { employees, onSort, sortColumn } = this.props;
+    const { employees, onSort, sortColumn, isManager } = this.props;
+
+    if (!isManager) {
+      this.columns = this.columns.slice(0, 3); //This is to render only the first three columns (without salary)
+    }
 
     return (
       <Table

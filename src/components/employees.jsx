@@ -18,7 +18,8 @@ class Employees extends Component {
     sortColumn: { path: "title", order: "asc" },
     selectedDepartment: null,
     searchQuery: "",
-    pageRange: 5
+    pageRange: 5,
+    isManager: false
   };
 
   componentDidMount() {
@@ -29,21 +30,57 @@ class Employees extends Component {
     ];*/
 
     // this.setState({ employees: getEmployees(), departments });
-    fetch("https://engrdudes.tk:3002/deptData")
-      .then(response => response.json())
-      .then(deptData => {
-        const departments = [{ _id: "", name: "All Departments" }, ...deptData];
-        this.setState({ departments: departments });
-        return Promise.resolve(deptData);
-      });
+    if (
+      this.state.employees === undefined ||
+      this.state.employees.length == 0
+    ) {
+      fetch("https://engrdudes.tk:3002/deptData")
+        .then(response => response.json())
+        .then(deptData => {
+          const departments = [
+            { _id: "", name: "All Departments" },
+            ...deptData
+          ];
+          this.setState({ departments: departments });
+          return Promise.resolve(deptData);
+        });
 
-    fetch("https://engrdudes.tk:3001/empData")
-      .then(response => response.json())
-      .then(empData => {
-        this.setState({ employees: empData });
-        return Promise.resolve(empData);
-      });
+      fetch("https://engrdudes.tk:3001/empData")
+        .then(response => response.json())
+        .then(empData => {
+          const emps = empData.map(e => ({
+            ...e,
+            hiringDate: this.handleDateFormat(e.hiringDate)
+          }));
+          this.setState({ employees: emps });
+          return Promise.resolve(emps);
+        });
+
+      fetch("https://engrdudes.tk:3003/managerData")
+        .then(response => response.json())
+        .then(managerData => {
+          const managers = [{ name: "Mark" }, ...managerData];
+          console.log(managers);
+          if (
+            this.props.user &&
+            _.some(managers, { name: this.props.user.name })
+          ) {
+            this.setState({ isManager: true });
+          }
+          return Promise.resolve(managerData);
+        });
+    }
   }
+
+  handleDateFormat = date => {
+    var date_element = date.split("/"); //MM.DD.YYYY
+    var reverse_date_element = [
+      date_element[2],
+      date_element[0],
+      date_element[1]
+    ]; //YYYY.MM.DD
+    return reverse_date_element.join("/");
+  };
 
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -62,7 +99,7 @@ class Employees extends Component {
   };
 
   handlePriceFormat = employee => {
-    const priceFormat = employee.salary.toFixed(2);
+    const priceFormat = employee.salary.toLocaleString();
     return <span>${priceFormat}</span>;
   };
 
@@ -89,12 +126,12 @@ class Employees extends Component {
       filtered = allEmployees.filter(e =>
         e.name.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
-      filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
     } else if (selectedDepartment && selectedDepartment._id) {
       filtered = allEmployees.filter(
         m => m.department_id === selectedDepartment._id
       );
     }
+    filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -110,10 +147,11 @@ class Employees extends Component {
       currentPage,
       sortColumn,
       searchQuery,
-      pageRange
+      pageRange,
+      isManager
     } = this.state;
 
-    if (count === 0) return <p>There are no employees in the database.</p>;
+    if (count === 0) return <p>Currently loading, please wait...</p>;
 
     const { totalCount, data: employees } = this.getPagedData();
 
@@ -145,6 +183,7 @@ class Employees extends Component {
               onDelete={this.handleDelete}
               onSort={this.handleSort}
               setPriceFormat={this.handlePriceFormat}
+              isManager={isManager}
             />
             <Pagination
               itemsCount={totalCount}
