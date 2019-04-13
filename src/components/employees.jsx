@@ -41,8 +41,12 @@ class Employees extends Component {
     fetch("https://engrdudes.tk:3001/empData")
       .then(response => response.json())
       .then(empData => {
-        this.setState({ employees: empData });
-        return Promise.resolve(empData);
+        const emps = empData.map(e => ({
+          ...e,
+          hiringDate: this.handleDateFormat(e.hiringDate)
+        }));
+        this.setState({ employees: emps });
+        return Promise.resolve(emps);
       });
 
     fetch("https://engrdudes.tk:3003/managerData")
@@ -56,6 +60,16 @@ class Employees extends Component {
         return Promise.resolve(managerData);
       });
   }
+
+  handleDateFormat = date => {
+    var date_element = date.split("/"); //MM.DD.YYYY
+    var reverse_date_element = [
+      date_element[2],
+      date_element[0],
+      date_element[1]
+    ]; //YYYY.MM.DD
+    return reverse_date_element.join("/");
+  };
 
   handlePageChange = page => {
     this.setState({ currentPage: page });
