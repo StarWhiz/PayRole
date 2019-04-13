@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Card,
   Button,
@@ -7,12 +7,11 @@ import {
   CardBody,
   CardTitle,
   CardDeck
-} from 'reactstrap';
-import { Redirect } from 'react-router-dom';
+} from "reactstrap";
 
 class Login extends Component {
   redirectTo = () => {
-    window.location.href = 'http://www.github.com';
+    window.location.href = "http://www.github.com";
   };
   render() {
     return (
@@ -29,7 +28,7 @@ class Login extends Component {
             <CardTitle>Log In using GitHub</CardTitle>
             <Button
               className="btn-github"
-              style={{ backgroundColor: '#444444' }}
+              style={{ backgroundColor: "#444444" }}
               onClick={this.redirectTo}
             >
               Log In
@@ -49,7 +48,7 @@ class Login extends Component {
             <Button
               className="btn-github"
               onClick={() => this.props.onLogin(this)}
-              style={{ backgroundColor: '#444444' }}
+              style={{ backgroundColor: "#444444" }}
             >
               Log In
             </Button>
@@ -62,25 +61,25 @@ class Login extends Component {
 
 const styles = {
   logos: {
-    maxWidth: '250px',
-    maxHeight: '250px'
+    maxWidth: "250px",
+    maxHeight: "250px"
   },
   header: {
-    display: 'flex',
-    justifyContent: 'center',
-    backgroundColor: 'white'
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   card: {
-    textAlign: 'center',
-    boxShadow: '7px 7px 8px 0px rgba(0,0,0,0.3)',
-    margin: '50px',
-    borderRadius: '2px'
+    textAlign: "center",
+    boxShadow: "7px 7px 8px 0px rgba(0,0,0,0.3)",
+    margin: "50px",
+    borderRadius: "2px"
   },
   container: {
-    backgroundColor: '#ededed',
-    borderRadius: '5px',
-    boxShadow: '10px 10px 150px 58px rgba(0,0,0,0.6)',
-    marginTop: '80px'
+    backgroundColor: "#ededed",
+    borderRadius: "5px",
+    boxShadow: "10px 10px 150px 58px rgba(0,0,0,0.6)",
+    marginTop: "80px"
   }
 };
 

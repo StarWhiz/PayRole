@@ -54,7 +54,10 @@ class Employees extends Component {
       .then(managerData => {
         const managers = [{ name: "Mark" }, ...managerData];
         console.log(managers);
-        if (_.some(managers, { name: this.props.user.name })) {
+        if (
+          this.props.user &&
+          _.some(managers, { name: this.props.user.name })
+        ) {
           this.setState({ isManager: true });
         }
         return Promise.resolve(managerData);
