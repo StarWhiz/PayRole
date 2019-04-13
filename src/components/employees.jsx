@@ -18,7 +18,8 @@ class Employees extends Component {
     sortColumn: { path: "title", order: "asc" },
     selectedDepartment: null,
     searchQuery: "",
-    pageRange: 5
+    pageRange: 5,
+    isManager: false
   };
 
   componentDidMount() {
@@ -42,6 +43,17 @@ class Employees extends Component {
       .then(empData => {
         this.setState({ employees: empData });
         return Promise.resolve(empData);
+      });
+
+    fetch("https://engrdudes.tk:3003/managerData")
+      .then(response => response.json())
+      .then(managerData => {
+        const managers = [{ name: "Mark" }, ...managerData];
+        console.log(managers);
+        if (_.some(managers, { name: this.props.user.name })) {
+          this.setState({ isManager: true });
+        }
+        return Promise.resolve(managerData);
       });
   }
 
@@ -110,7 +122,8 @@ class Employees extends Component {
       currentPage,
       sortColumn,
       searchQuery,
-      pageRange
+      pageRange,
+      isManager
     } = this.state;
 
     if (count === 0) return <p>There are no employees in the database.</p>;
@@ -145,6 +158,7 @@ class Employees extends Component {
               onDelete={this.handleDelete}
               onSort={this.handleSort}
               setPriceFormat={this.handlePriceFormat}
+              isManager={isManager}
             />
             <Pagination
               itemsCount={totalCount}
