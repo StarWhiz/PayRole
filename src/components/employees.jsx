@@ -74,7 +74,7 @@ class Employees extends Component {
   };
 
   handlePriceFormat = employee => {
-    const priceFormat = employee.salary.toFixed(2);
+    const priceFormat = employee.salary.toLocaleString();
     return <span>${priceFormat}</span>;
   };
 
@@ -101,12 +101,12 @@ class Employees extends Component {
       filtered = allEmployees.filter(e =>
         e.name.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
-      filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
     } else if (selectedDepartment && selectedDepartment._id) {
       filtered = allEmployees.filter(
         m => m.department_id === selectedDepartment._id
       );
     }
+    filtered = _.uniqBy(filtered, "name"); //Gets rid of duplicate employee matches
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
