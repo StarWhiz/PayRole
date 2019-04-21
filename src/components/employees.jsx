@@ -8,6 +8,7 @@ import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Employees extends Component {
   state = {
@@ -32,7 +33,7 @@ class Employees extends Component {
     // this.setState({ employees: getEmployees(), departments });
     if (
       this.state.employees === undefined ||
-      this.state.employees.length == 0
+      this.state.employees.length === 0
     ) {
       fetch("https://engrdudes.tk:3002/deptData")
         .then(response => response.json())
@@ -174,6 +175,14 @@ class Employees extends Component {
             >
               Logout
             </button>
+            &nbsp;&nbsp;&nbsp;
+            <Link
+              to="/employees/new"
+              className="btn btn-primary"
+              style={{ marginBottom: 20 }}
+            >
+              Add Employee
+            </Link>
             <p>Showing {totalCount} employees in the database.</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <EmployeesTable
