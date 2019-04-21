@@ -24,53 +24,38 @@ class Employees extends Component {
   };
 
   componentDidMount() {
-    /*
-    const departments = [
-      { _id: "", name: "All Departments" },
-      ...getDepartments()
-    ];*/
+    fetch("https://engrdudes.tk:3002/deptData")
+      .then(response => response.json())
+      .then(deptData => {
+        const departments = [{ _id: "", name: "All Departments" }, ...deptData];
+        this.setState({ departments: departments });
+        return Promise.resolve(deptData);
+      });
 
-    // this.setState({ employees: getEmployees(), departments });
-    if (
-      this.state.employees === undefined ||
-      this.state.employees.length === 0
-    ) {
-      fetch("https://engrdudes.tk:3002/deptData")
-        .then(response => response.json())
-        .then(deptData => {
-          const departments = [
-            { _id: "", name: "All Departments" },
-            ...deptData
-          ];
-          this.setState({ departments: departments });
-          return Promise.resolve(deptData);
-        });
+    fetch("https://engrdudes.tk:3001/empData")
+      .then(response => response.json())
+      .then(empData => {
+        const emps = empData.map(e => ({
+          ...e,
+          hiringDate: this.handleDateFormat(e.hiringDate)
+        }));
+        this.setState({ employees: emps });
+        return Promise.resolve(emps);
+      });
 
-      fetch("https://engrdudes.tk:3001/empData")
-        .then(response => response.json())
-        .then(empData => {
-          const emps = empData.map(e => ({
-            ...e,
-            hiringDate: this.handleDateFormat(e.hiringDate)
-          }));
-          this.setState({ employees: emps });
-          return Promise.resolve(emps);
-        });
-
-      fetch("https://engrdudes.tk:3003/managerData")
-        .then(response => response.json())
-        .then(managerData => {
-          const managers = [{ name: "Mark" }, ...managerData];
-          console.log(managers);
-          if (
-            this.props.user &&
-            _.some(managers, { name: this.props.user.name })
-          ) {
-            this.setState({ isManager: true });
-          }
-          return Promise.resolve(managerData);
-        });
-    }
+    fetch("https://engrdudes.tk:3003/managerData")
+      .then(response => response.json())
+      .then(managerData => {
+        const managers = [{ name: "Mark" }, ...managerData];
+        console.log(managers);
+        if (
+          this.props.user &&
+          _.some(managers, { name: this.props.user.name })
+        ) {
+          this.setState({ isManager: true });
+        }
+        return Promise.resolve(managerData);
+      });
   }
 
   handleDateFormat = date => {

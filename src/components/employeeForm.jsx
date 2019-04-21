@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { insertEmployeeToSQL } from "./../services/insertEmployeeService";
 
 class EmployeeForm extends Form {
   state = {
@@ -41,7 +42,9 @@ class EmployeeForm extends Form {
   }
 
   doSubmit = () => {
-    //saveMovie(this.state.data);
+    var employee = this.state.data;
+    employee.employee_id = Date.now().toString();
+    console.log(employee);
 
     this.props.history.push("/employees");
   };
@@ -57,7 +60,7 @@ class EmployeeForm extends Form {
             "Department",
             this.state.departments
           )}
-          {this.renderInput("hiringDate", "Hiring Date")}
+          {this.renderInput("hiringDate", "Hiring Date (MM/DD/YYYY)")}
           {this.renderInput("salary", "Salary")}
           {this.renderButton("Save")}
         </form>
