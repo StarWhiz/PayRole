@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import _ from "lodash";
 import { insertEmployeeToSQL } from "./../services/insertEmployeeService";
 
 class EmployeeForm extends Form {
@@ -42,8 +43,13 @@ class EmployeeForm extends Form {
   }
 
   doSubmit = () => {
-    var employee = this.state.data;
+    var employee = { ...this.state.data, department_name: "" };
+    const deptName = _.find(this.state.departments, [
+      "_id",
+      employee.department_id
+    ]).name;
     employee.employee_id = Date.now().toString();
+    employee.department_name = deptName;
     console.log(employee);
 
     this.props.history.push("/employees");
