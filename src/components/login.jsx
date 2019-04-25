@@ -10,9 +10,11 @@ import {
 } from "reactstrap";
 
 class Login extends Component {
+  
   redirectTo = () => {
-    window.location.href = "http://www.github.com";
+    window.location.href = "http://portal.azure.com";
   };
+
   render() {
     return (
       <CardDeck style={styles.container}>
@@ -25,7 +27,7 @@ class Login extends Component {
             />
           </CardHeader>
           <CardBody>
-            <CardTitle>Log In using GitHub</CardTitle>
+            <CardTitle>Log In to Azure</CardTitle>
             <Button
               className="btn-github"
               style={{ backgroundColor: "#444444" }}
