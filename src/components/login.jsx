@@ -23,7 +23,7 @@ class Login extends Component {
             <CardImg
               className="logos"
               style={styles.logos}
-              src="./github.png"
+              src="./Azure.png"
             />
           </CardHeader>
           <CardBody>
