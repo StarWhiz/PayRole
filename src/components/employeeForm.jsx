@@ -2,7 +2,6 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import _ from "lodash";
-import { insertEmployeeToSQL } from "./../services/insertEmployeeService";
 
 class EmployeeForm extends Form {
   state = {
@@ -78,17 +77,46 @@ class EmployeeForm extends Form {
       department_name
     } = employee;
 
-    insertEmployeeToSQL(
-      employee_id,
-      firstName,
-      lastName,
-      hiringDate,
-      salary,
-      department_id,
-      department_name
+    console.log(
+      "https://engrdudes.tk:3005/insertEmp/add?emp_no=" +
+        employee_id +
+        "&first_name=" +
+        firstName +
+        "&last_name=" +
+        lastName +
+        "&date=" +
+        hiringDate +
+        "&salary=" +
+        salary +
+        "&dept_no=" +
+        department_id +
+        "&dept_name=" +
+        department_name
     );
 
-    this.props.history.push("/employees");
+    fetch(
+      "https://engrdudes.tk:3005/insertEmp/add?emp_no=" +
+        employee_id +
+        "&first_name=" +
+        firstName +
+        "&last_name=" +
+        lastName +
+        "&date=" +
+        hiringDate +
+        "&salary=" +
+        salary +
+        "&dept_no=" +
+        department_id +
+        "&dept_name=" +
+        department_name
+    )
+      .then(response => response.text())
+      .then(response1 => {
+        console.log(response1);
+        this.props.history.push("/employees");
+        return Promise.resolve(response1);
+      })
+      .catch(err => console.error(err));
   };
 
   render() {
