@@ -47,7 +47,7 @@ class Employees extends Component {
       .then(response => response.json())
       .then(managerData => {
         const managers = [{ name: "Mark" }, ...managerData];
-        console.log(managers);
+        //console.log(managers);
         if (
           this.props.user &&
           _.some(managers, { name: this.props.user.name })

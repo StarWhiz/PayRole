@@ -68,6 +68,26 @@ class EmployeeForm extends Form {
 
     console.log(employee);
 
+    const {
+      employee_id,
+      firstName,
+      lastName,
+      hiringDate,
+      salary,
+      department_id,
+      department_name
+    } = employee;
+
+    insertEmployeeToSQL(
+      employee_id,
+      firstName,
+      lastName,
+      hiringDate,
+      salary,
+      department_id,
+      department_name
+    );
+
     this.props.history.push("/employees");
   };
 
