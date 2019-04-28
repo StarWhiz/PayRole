@@ -44,5 +44,5 @@ https.createServer({
   key: fs.readFileSync('certs/privkey1.pem'),
   cert: fs.readFileSync('certs/fullchain1.pem')
 }, app).listen(3005, () => {
-  console.log('Listening...See content at https://engrdudes.tk:3005/insertEmp/add?emp_no=999997&first_name=Tai&last_name=Dao&date=12211990&salary=100000&dept_no=d005&dept_name=Developmnent')
+  console.log('Listening...See content at https://engrdudes.tk:3005/insertEmp/add?emp_no=999997&first_name=Tai&last_name=Dao&date=12211990&salary=100000&dept_no=d005&dept_name=Development')
 })
