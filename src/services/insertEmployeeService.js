@@ -1,4 +1,9 @@
+const https = require('https');
+const fs = require('fs');
 const mysql = require('mysql');
+const express = require('express')
+
+const app = express();
 
 const con = mysql.createConnection({
   host: "138.68.9.254",
@@ -8,25 +13,36 @@ const con = mysql.createConnection({
   database: "employees"
 });
 
-function insertEmployeeToSQL (emp_no, first_name, last_name, date, salary, dept_no, dept_name) {
-  // SQL Query
-  let sqlQuery = "INSERT INTO combined_emp_data VALUES (" + emp_no + ", " + '"' + first_name + '"' + 
-  ", " + '"' + last_name + '"' + ", " + '"' + date + '"' + ", " + salary + ", " + '"' + dept_no + '"' 
-  + ", " + '"' + dept_name + '"' + ");"
+// Initialize MySQL Connection
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to database!");
+});
 
-  console.log(sqlQuery);
-  con.query(sqlQuery, function(err, result) {
-    if (err) {
-      throw err;
-      con.end();
-    }
-    // TODO: Something then..
-    console.log("1 employee record inserted...");
-    con.end();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
   });
-}
 
-// Example Usage of Function
-// insertEmployeeToSQL("999999", "Tai", "Dao", "04/11/2019", "120000", "d005", "Development");
+app.get('/insertEmp/add', (req, res) => {
+  const {emp_no, first_name, last_name, date, salary, dept_no, dept_name } = req.query;
+  const INSERT_QUERY = `INSERT INTO combined_emp_data (emp_no, first_name, last_name, date, salary, dept_no, dept_name) VALUES(
+'${emp_no}', '${first_name}', '${last_name}', '${date}', '${salary}', '${dept_no}', '${dept_name}')`
+  con.query(INSERT_QUERY, (err, results)=> {
+      if(err) {
+        return res.send(err)
+      }
+      else {
+        return res.send('succesfully added employee')
+      }
+  });
+});
 
-// DELETE QUERY: delete from combined_emp_data where emp_no = 999999;
+
+https.createServer({
+  key: fs.readFileSync('certs/privkey1.pem'),
+  cert: fs.readFileSync('certs/fullchain1.pem')
+}, app).listen(3005, () => {
+  console.log('Listening...See content at https://engrdudes.tk:3005/insertEmp/add?emp_no=999997&first_name=Tai&last_name=Dao&date=12211990&salary=100000&dept_no=d005&dept_name=Developmnent')
+})
