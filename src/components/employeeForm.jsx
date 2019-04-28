@@ -7,20 +7,25 @@ import { insertEmployeeToSQL } from "./../services/insertEmployeeService";
 class EmployeeForm extends Form {
   state = {
     data: {
-      name: "",
+      firstName: "",
+      lastName: "",
       department_id: "",
       hiringDate: "",
       salary: ""
     },
     departments: [],
-    errors: {}
+    errors: {},
+    lastID: ""
   };
 
   schema = {
     employee_id: Joi.string(),
-    name: Joi.string()
+    firstName: Joi.string()
       .required()
-      .label("Name"),
+      .label("First Name"),
+    lastName: Joi.string()
+      .required()
+      .label("Last Name"),
     department_id: Joi.string()
       .required()
       .label("Department"),
@@ -40,16 +45,27 @@ class EmployeeForm extends Form {
         this.setState({ departments: departments });
         return Promise.resolve(deptData);
       });
+
+    fetch("https://engrdudes.tk:3004/lastEmp")
+      .then(response => response.json())
+      .then(lastEmpIDObj => {
+        const lastID = lastEmpIDObj[0].employee_id;
+        this.setState({ lastID });
+        return Promise.resolve(lastEmpIDObj);
+      });
   }
 
   doSubmit = () => {
     var employee = { ...this.state.data, department_name: "" };
+
+    //get department and id
     const deptName = _.find(this.state.departments, [
       "_id",
       employee.department_id
     ]).name;
-    employee.employee_id = Date.now().toString();
     employee.department_name = deptName;
+    employee.employee_id = (this.state.lastID + 1).toString();
+
     console.log(employee);
 
     this.props.history.push("/employees");
@@ -60,7 +76,8 @@ class EmployeeForm extends Form {
       <div>
         <h1>Add Employee</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name")}
+          {this.renderInput("firstName", "First Name")}
+          {this.renderInput("lastName", "Last Name")}
           {this.renderSelect(
             "department_id",
             "Department",
