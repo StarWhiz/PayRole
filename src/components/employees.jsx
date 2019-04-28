@@ -46,7 +46,7 @@ class Employees extends Component {
     fetch("https://engrdudes.tk:3003/managerData")
       .then(response => response.json())
       .then(managerData => {
-        const managers = [{ name: "Mark" }, ...managerData];
+        const managers = [{ name: "Mark" }, ...managerData]; //{ name: "Mark" },
         //console.log(managers);
         if (
           this.props.user &&
@@ -161,13 +161,15 @@ class Employees extends Component {
               Logout
             </button>
             &nbsp;&nbsp;&nbsp;
-            <Link
-              to="/employees/new"
-              className="btn btn-primary"
-              style={{ marginBottom: 20 }}
-            >
-              Add Employee
-            </Link>
+            {isManager && (
+              <Link
+                to="/employees/new"
+                className="btn btn-primary"
+                style={{ marginBottom: 20 }}
+              >
+                Add Employee
+              </Link>
+            )}
             <p>Showing {totalCount} employees in the database.</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <EmployeesTable
