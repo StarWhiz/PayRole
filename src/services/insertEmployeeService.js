@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require("mysql");
 
 const con = mysql.createConnection({
   host: "138.68.9.254",
@@ -8,17 +8,48 @@ const con = mysql.createConnection({
   database: "employees"
 });
 
-function insertEmployeeToSQL (emp_no, first_name, last_name, date, salary, dept_no, dept_name) {
+export function insertEmployeeToSQL(
+  emp_no,
+  first_name,
+  last_name,
+  date,
+  salary,
+  dept_no,
+  dept_name
+) {
   // SQL Query
-  let sqlQuery = "INSERT INTO combined_emp_data VALUES (" + emp_no + ", " + '"' + first_name + '"' + 
-  ", " + '"' + last_name + '"' + ", " + '"' + date + '"' + ", " + salary + ", " + '"' + dept_no + '"' 
-  + ", " + '"' + dept_name + '"' + ");"
+  let sqlQuery =
+    "INSERT INTO combined_emp_data VALUES (" +
+    emp_no +
+    ", " +
+    '"' +
+    first_name +
+    '"' +
+    ", " +
+    '"' +
+    last_name +
+    '"' +
+    ", " +
+    '"' +
+    date +
+    '"' +
+    ", " +
+    salary +
+    ", " +
+    '"' +
+    dept_no +
+    '"' +
+    ", " +
+    '"' +
+    dept_name +
+    '"' +
+    ");";
 
   console.log(sqlQuery);
   con.query(sqlQuery, function(err, result) {
     if (err) {
-      throw err;
       con.end();
+      throw err;
     }
     // TODO: Something then..
     console.log("1 employee record inserted...");

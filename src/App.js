@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import Login from "./components/login";
 import AuthService from "./services/authService";
 import GraphService from "./services/graphService";
+import EmployeeForm from "./components/employeeForm";
 
 class App extends Component {
   constructor() {
@@ -34,7 +35,7 @@ class App extends Component {
           this.setState({
             user: user
           });
-          that.props.history.replace("/employees/employee");
+          that.props.history.replace("/employees");
         } else {
           this.setState({
             loginFailed: true
@@ -53,8 +54,9 @@ class App extends Component {
     return (
       <main className="container">
         <Switch>
+          <Route path="/employees/new" component={EmployeeForm} />
           <Route
-            path="/employees/employee"
+            path="/employees"
             render={props => (
               <Employees
                 onLogout={this.logout}

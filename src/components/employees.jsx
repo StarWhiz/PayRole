@@ -4,10 +4,11 @@ import ListGroup from './common/listGroup';
 import Pagination from './common/pagination';
 //import { getEmployees } from "../services/fakeEmployeeService";
 //import { getDepartments } from "../services/fakeDepartmentService";
-import { paginate } from '../utils/paginate';
-import _ from 'lodash';
-import SearchBox from './searchBox';
-import { Redirect } from 'react-router-dom';
+import { paginate } from "../utils/paginate";
+import _ from "lodash";
+import SearchBox from "./searchBox";
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './employees.css';
 
 class Employees extends Component {
@@ -24,53 +25,38 @@ class Employees extends Component {
   };
 
   componentDidMount() {
-    /*
-    const departments = [
-      { _id: "", name: "All Departments" },
-      ...getDepartments()
-    ];*/
+    fetch("https://engrdudes.tk:3002/deptData")
+      .then(response => response.json())
+      .then(deptData => {
+        const departments = [{ _id: "", name: "All Departments" }, ...deptData];
+        this.setState({ departments: departments });
+        return Promise.resolve(deptData);
+      });
 
-    // this.setState({ employees: getEmployees(), departments });
-    if (
-      this.state.employees === undefined ||
-      this.state.employees.length === 0
-    ) {
-      fetch('https://engrdudes.tk:3002/deptData')
-        .then(response => response.json())
-        .then(deptData => {
-          const departments = [
-            { _id: '', name: 'All Departments' },
-            ...deptData
-          ];
-          this.setState({ departments: departments });
-          return Promise.resolve(deptData);
-        });
+    fetch("https://engrdudes.tk:3001/empData")
+      .then(response => response.json())
+      .then(empData => {
+        const emps = empData.map(e => ({
+          ...e,
+          hiringDate: this.handleDateFormat(e.hiringDate)
+        }));
+        this.setState({ employees: emps });
+        return Promise.resolve(emps);
+      });
 
-      fetch('https://engrdudes.tk:3001/empData')
-        .then(response => response.json())
-        .then(empData => {
-          const emps = empData.map(e => ({
-            ...e,
-            hiringDate: this.handleDateFormat(e.hiringDate)
-          }));
-          this.setState({ employees: emps });
-          return Promise.resolve(emps);
-        });
-
-      fetch('https://engrdudes.tk:3003/managerData')
-        .then(response => response.json())
-        .then(managerData => {
-          const managers = [{ name: 'Mark' }, ...managerData];
-          console.log(managers);
-          if (
-            this.props.user &&
-            _.some(managers, { name: this.props.user.name })
-          ) {
-            this.setState({ isManager: true });
-          }
-          return Promise.resolve(managerData);
-        });
-    }
+    fetch("https://engrdudes.tk:3003/managerData")
+      .then(response => response.json())
+      .then(managerData => {
+        const managers = [{ name: "Mark" }, ...managerData]; //{ name: "Mark" },
+        //console.log(managers);
+        if (
+          this.props.user &&
+          _.some(managers, { name: this.props.user.name })
+        ) {
+          this.setState({ isManager: true });
+        }
+        return Promise.resolve(managerData);
+      });
   }
 
   handleDateFormat = date => {
@@ -175,6 +161,16 @@ class Employees extends Component {
             >
               Logout
             </button>
+            &nbsp;&nbsp;&nbsp;
+            {isManager && (
+              <Link
+                to="/employees/new"
+                className="btn btn-primary"
+                style={{ marginBottom: 20 }}
+              >
+                Add Employee
+              </Link>
+            )}
             <p>Showing {totalCount} employees in the database.</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <EmployeesTable
