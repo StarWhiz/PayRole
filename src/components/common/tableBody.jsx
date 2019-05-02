@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import { getCount } from "./../../utils/count";
 
 class TableBody extends Component {
   renderCell = (item, column) => {
@@ -18,7 +19,7 @@ class TableBody extends Component {
     return (
       <tbody>
         {data.map(item => (
-          <tr key={item.employee_id}>
+          <tr key={item.employee_id + getCount().toString()}>
             {columns.map(column => (
               <td key={this.createKey(item, column)}>
                 {this.renderCell(item, column)}
