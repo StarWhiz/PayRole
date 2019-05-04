@@ -10,7 +10,6 @@ import {
 } from "reactstrap";
 
 class Login extends Component {
-  
   redirectTo = () => {
     window.location.href = "http://portal.azure.com";
   };
@@ -20,11 +19,7 @@ class Login extends Component {
       <CardDeck style={styles.container}>
         <Card style={styles.card}>
           <CardHeader style={styles.header}>
-            <CardImg
-              className="logos"
-              style={styles.logos}
-              src="./Azure.png"
-            />
+            <CardImg className="logos" style={styles.logos} src="./Azure.png" />
           </CardHeader>
           <CardBody>
             <CardTitle>Log In to Azure</CardTitle>
@@ -39,14 +34,10 @@ class Login extends Component {
         </Card>
         <Card style={styles.card}>
           <CardHeader style={styles.header}>
-            <CardImg
-              className="logos"
-              style={styles.logos}
-              src="./ourLogo.jpg"
-            />
+            <CardImg className="logos" style={styles.logos} src="./Logo.png" />
           </CardHeader>
           <CardBody>
-            <CardTitle>Direct Log In</CardTitle>
+            <CardTitle>Log In to PayRole</CardTitle>
             <Button
               className="btn-github"
               onClick={() => this.props.onLogin(this)}
