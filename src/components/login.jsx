@@ -34,7 +34,7 @@ class Login extends Component {
         </Card>
         <Card style={styles.card}>
           <CardHeader style={styles.header}>
-            <CardImg className="logos" style={styles.logos} src="./Logo.png" />
+            <CardImg className="logos" style={styles.logos} src="./Logo.jpg" />
           </CardHeader>
           <CardBody>
             <CardTitle>Log In to PayRole</CardTitle>
