@@ -9,6 +9,7 @@ import _ from "lodash";
 import SearchBox from "./searchBox";
 import { Redirect } from "react-router-dom";
 import "./employees.css";
+import { Link } from "react-router-dom";
 
 class Employees extends Component {
   state = {
